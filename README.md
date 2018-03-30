@@ -15,7 +15,48 @@ Along with exploring state-of-the-art CNN models for classification, you will ma
 
 ## Project Instructions
 
-### Instructions
+### Running project on AWS
+
+1. Log into AWS account, choose region as Oregon and request limit increase of ```g2.2xlarge``` to "1", if not opted earlier.
+2. In the EC2 dashboard page, go to "Launch instance", search for "Ubuntu x64 with Tensorflow" in AWS Marketplace section.
+3. Select the instance, leave all options to default, click "review and launch".
+4. You will be asked to generate a private key. Save the privateKey.pem file in your computer.
+5. Start the instance, make a note of the IPv4 public IP. In your local computer, goto the location where you have saved the privateKey.pem file. 
+6. Open terminal, type ```ssh -i privateKey.pem ubuntu@IPv4PublicIP```
+7. Type the below commands to clone the project and configure jupyter notebook
+```	
+git clone https://github.com/udacity/dog-project.git
+cd dog-project
+jupyter notebook --generate-config
+pip install tqdm
+sed -ie "s/#c.NotebookApp.ip = 'localhost'/#c.NotebookApp.ip = '*'/g" ~/.jupyter/jupyter_notebook_config.py
+```
+8. Download all files and unzip them
+```
+mkdir dogImages
+cd dogImages
+wget https://s3-us-west-1.amazonaws.com/udacity-aind/dog-project/dogImages.zip
+cd ..
+mkdir lfw
+cd lfw
+wget https://s3-us-west-1.amazonaws.com/udacity-aind/dog-project/lfw.zip
+cd ..
+mkdir bottleneck_features
+cd bottleneck_features
+wget https://s3-us-west-1.amazonaws.com/udacity-aind/dog-project/DogVGG16Data.npz
+wget https://s3-us-west-1.amazonaws.com/udacity-aind/dog-project/DogXceptionData.npz
+```
+9. Start Jupyter notebook
+```
+jupyter notebook --ip=0.0.0.0 --no-browser
+```
+10. The above command will give you a URL somewhat like this: 
+```http://0.0.0.0:8888/?token=eca2c164a11847f53aec732f0d79cca5d024120887657a19``` 
+Copy the URL, replace 0.0.0.0 with your IPv4 IP and paste the link in your browser.
+
+Happy learning!
+
+### Instructions (Local Install)
 
 1. Clone the repository and navigate to the downloaded folder.
 ```	
@@ -72,12 +113,7 @@ cd dog-project
 	pip install -r requirements/requirements.txt
 	```
 	
-8. (Optional) **If you are using AWS**, install Tensorflow.
-```
-sudo python3 -m pip install -r requirements/requirements-gpu.txt
-```
-	
-9. Switch [Keras backend](https://keras.io/backend/) to TensorFlow.
+8. Switch [Keras backend](https://keras.io/backend/) to TensorFlow.
 	- __Linux__ or __Mac__: 
 		```
 		KERAS_BACKEND=tensorflow python -c "from keras import backend"
@@ -88,17 +124,17 @@ sudo python3 -m pip install -r requirements/requirements-gpu.txt
 		python -c "from keras import backend"
 		```
 
-10. (Optional) **If you are running the project on your local machine (and not using AWS)**, create an [IPython kernel](http://ipython.readthedocs.io/en/stable/install/kernel_install.html) for the `dog-project` environment. 
+9. (Optional) **If you are running the project on your local machine (and not using AWS)**, create an [IPython kernel](http://ipython.readthedocs.io/en/stable/install/kernel_install.html) for the `dog-project` environment. 
 ```
 python -m ipykernel install --user --name dog-project --display-name "dog-project"
 ```
 
-11. Open the notebook.
+10. Open the notebook.
 ```
 jupyter notebook dog_app.ipynb
 ```
 
-12. (Optional) **If you are running the project on your local machine (and not using AWS)**, before running code, change the kernel to match the dog-project environment by using the drop-down menu (**Kernel > Change kernel > dog-project**). Then, follow the instructions in the notebook.
+11. (Optional) **If you are running the project on your local machine (and not using AWS)**, before running code, change the kernel to match the dog-project environment by using the drop-down menu (**Kernel > Change kernel > dog-project**). Then, follow the instructions in the notebook.
 
 __NOTE:__ While some code has already been implemented to get you started, you will need to implement additional functionality to successfully answer all of the questions included in the notebook. __Unless requested, do not modify code that has already been included.__
 
